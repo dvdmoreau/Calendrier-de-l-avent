@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Calendrier de l'Avent — Chic &amp; Élegant</title>
+  <style>
+    :root{
+      --bg: #f8f6f4;
+      --card: #ffffff;
+      --gold: #b89144;
+      --muted: #9b948e;
+      --accent: #efe6d9;
+      --shadow: 0 6px 18px rgba(0,0,0,0.06);
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#fff);color:#2b2b2b}
+    header{padding:28px 20px;text-align:center}
+    header h1{margin:0;font-size:22px;letter-spacing:0.6px}
+    header p{margin:6px 0 0;color:var(--muted)}
+    .container{max-width:980px;margin:20px auto;padding:20px}
+    .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+    .tile{
+      background:linear-gradient(180deg,var(--card),#fcfbfb);
+      border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;cursor:pointer;box-shadow:var(--shadow);min-height:110px;transition:transform .16s ease,opacity .16s ease;
+    }
+    .tile.locked{opacity:.46;cursor:not-allowed;filter:grayscale(.05)}
+    .day{font-weight:700;font-size:22px;color:var(--gold);margin-bottom:6px}
+    .label{font-size:12px;color:var(--muted)}
+    .tile:hover{transform:translateY(-6px)}
+    .badge{position:absolute;top:10px;right:10px;background:var(--accent);padding:6px 8px;border-radius:999px;font-size:12px;border:1px solid rgba(0,0,0,0.03)}
+
+    /* modal / panel */
+    .panel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.95);background:var(--card);width:min(760px,95%);max-height:86vh;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,0.18);opacity:0;pointer-events:none;transition:all .22s ease;display:flex;flex-direction:column}
+    .panel.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+    .panel .head{padding:18px;border-bottom:1px solid #f1eee9;display:flex;align-items:center;justify-content:space-between}
+    .panel .head h2{margin:0;font-size:18px}
+    .panel .body{padding:20px;overflow:auto}
+    .controls{display:flex;gap:8px;align-items:center}
+    button.btn{background:var(--gold);color:#fff;border:none;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+    button.ghost{background:transparent;border:1px solid #e9e2d6;color:var(--muted);}
+    .edit-note{font-size:13px;color:var(--muted);margin-bottom:10px}
+    .textarea{min-height:160px;border-radius:10px;padding:12px;border:1px solid #eee;background:#fff;outline:none;width:100%;resize:vertical}
+    .meta{font-size:13px;color:var(--muted);margin-top:12px}
+
+    footer{max-width:980px;margin:18px auto;padding:14px;text-align:center;color:var(--muted);font-size:13px}
+
+    @media (max-width:880px){.grid{grid-template-columns:repeat(4,1fr)} }
+    @media (max-width:560px){.grid{grid-template-columns:repeat(3,1fr)} }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Calendrier de l'Avent — Chic &amp; Élégant</h1>
+    <p>🎁 Les cases ne s'ouvrent que le jour correspondant (heure locale du navigateur). Pour éditer : ajoute <code>?edit=1</code> à l'URL.</p>
+  </header>
+
+  <div class="container">
+    <div class="grid" id="grid"><div class="tile" data-day="1"><div class="badge">Déc 1</div><div class="day">1</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="2"><div class="badge">Déc 2</div><div class="day">2</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="3"><div class="badge">Déc 3</div><div class="day">3</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="4"><div class="badge">Déc 4</div><div class="day">4</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="5"><div class="badge">Déc 5</div><div class="day">5</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="6"><div class="badge">Déc 6</div><div class="day">6</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="7"><div class="badge">Déc 7</div><div class="day">7</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="8"><div class="badge">Déc 8</div><div class="day">8</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="9"><div class="badge">Déc 9</div><div class="day">9</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="10"><div class="badge">Déc 10</div><div class="day">10</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="11"><div class="badge">Déc 11</div><div class="day">11</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="12"><div class="badge">Déc 12</div><div class="day">12</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="13"><div class="badge">Déc 13</div><div class="day">13</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="14"><div class="badge">Déc 14</div><div class="day">14</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="15"><div class="badge">Déc 15</div><div class="day">15</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="16"><div class="badge">Déc 16</div><div class="day">16</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="17"><div class="badge">Déc 17</div><div class="day">17</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="18"><div class="badge">Déc 18</div><div class="day">18</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="19"><div class="badge">Déc 19</div><div class="day">19</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="20"><div class="badge">Déc 20</div><div class="day">20</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="21"><div class="badge">Déc 21</div><div class="day">21</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="22"><div class="badge">Déc 22</div><div class="day">22</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="23"><div class="badge">Déc 23</div><div class="day">23</div><div class="label">Cliquer pour ouvrir</div></div><div class="tile locked" data-day="24"><div class="badge">Déc 24</div><div class="day">24</div><div class="label">Cliquer pour ouvrir</div></div></div>
+  </div>
+
+  <div class="panel" id="panel" aria-hidden="">
+    <div class="head">
+      <h2 id="panel-title">Jour</h2>
+      <div class="controls">
+        <button class="ghost" id="toggle-edit">Mode édition</button>
+        <button class="btn" id="close">Fermer</button>
+      </div>
+    </div>
+    <div class="body">
+      <div class="edit-note" id="edit-note">Entrez le contenu que vous voulez — le HTML est accepté (images, liens, texte). Sauvegarde locale automatique.</div>
+      <div contenteditable="true" class="textarea" id="day-content" aria-label="Contenu du jour"></div>
+      <div class="meta">Astuce : pour prévisualiser toutes les cases débloquées, ajoutez <code>?preview=1</code> à l'URL. Les modifications sont enregistrées dans votre navigateur (localStorage).</div>
+    </div>
+  </div>
+
+  <footer>• Hébergez ce fichier sur GitHub Pages ou Netlify (glisser-déposer) pour obtenir un lien public. •</footer>
+
+  <script>
+    const GRID = document.getElementById('grid');
+    const PANEL = document.getElementById('panel');
+    const TITLE = document.getElementById('panel-title');
+    const CONTENT = document.getElementById('day-content');
+    const CLOSE = document.getElementById('close');
+    const TOGGLE_EDIT = document.getElementById('toggle-edit');
+    const EDIT_NOTE = document.getElementById('edit-note');
+
+    // Helpers
+    const qs = new URLSearchParams(location.search);
+    const EDIT_MODE = qs.get('edit') === '1';
+    const PREVIEW = qs.get('preview') === '1';
+    const year = new Date().getFullYear();
+
+    function dayKey(d){ return `advent_day_${year}_${d}` }
+
+    // Build 24 tiles
+    for(let d=1; d<=24; d++){
+      const tile = document.createElement('div');
+      tile.className = 'tile locked';
+      tile.dataset.day = d;
+
+      const badge = document.createElement('div'); badge.className='badge'; badge.textContent = 'Déc ' + d;
+      const dayEl = document.createElement('div'); dayEl.className='day'; dayEl.textContent = d;
+      const label = document.createElement('div'); label.className='label'; label.textContent = 'Cliquer pour ouvrir';
+
+      tile.appendChild(badge);
+      tile.appendChild(dayEl);
+      tile.appendChild(label);
+
+      tile.addEventListener('click', ()=>openDay(d));
+      GRID.appendChild(tile);
+    }
+
+    function allowedToOpen(day){
+      if(PREVIEW) return true;
+      const now = new Date();
+      // use local timezone from user's browser
+      const thisYear = now.getFullYear();
+      const target = new Date(thisYear, 11, day); // December is month 11
+      // compare dates ignoring time
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      return today >= new Date(target.getFullYear(), target.getMonth(), target.getDate());
+    }
+
+    function refreshTiles(){
+      document.querySelectorAll('.tile').forEach(tile=>{
+        const d = Number(tile.dataset.day);
+        if(allowedToOpen(d) || EDIT_MODE){
+          tile.classList.remove('locked');
+        } else {
+          tile.classList.add('locked');
+        }
+      })
+    }
+
+    function openDay(day){
+      if(!allowedToOpen(day) && !EDIT_MODE && !PREVIEW){
+        // brief shake or hint
+        const tile = document.querySelector(`.tile[data-day='${day}']`);
+        tile.animate([{transform:'translateY(0)'},{transform:'translateY(-8px)'},{transform:'translateY(0)'}],{duration:260});
+        return;
+      }
+      TITLE.textContent = `Décembre ${day}`;
+      const saved = localStorage.getItem(dayKey(day)) || (`<p style="color:${window.getComputedStyle(document.body).getPropertyValue('--muted')}">Aucune surprise pour le moment — cliquez dans la zone et écrivez votre message. (HTML autorisé)</p>`);
+      CONTENT.innerHTML = saved;
+      PANEL.classList.add('open');
+      PANEL.setAttribute('aria-hidden','false');
+      // toggle edit UI state
+      setEditMode(EDIT_MODE);
+
+      // save on blur
+      CONTENT.onblur = ()=>{
+        if(EDIT_MODE) saveDay(day);
+      }
+      // also autosave every 4s when contentEditable and editing
+      if(EDIT_MODE){
+        if(window._autosaveInterval) clearInterval(window._autosaveInterval);
+        window._autosaveInterval = setInterval(()=>saveDay(day),4000);
+      }
+
+      // expose current day for save
+      PANEL.dataset.currentDay = day;
+    }
+
+    function closePanel(){
+      PANEL.classList.remove('open');
+      PANEL.setAttribute('aria-hidden','true');
+      if(window._autosaveInterval) clearInterval(window._autosaveInterval);
+    }
+
+    function saveDay(day){
+      const html = CONTENT.innerHTML;
+      localStorage.setItem(dayKey(day), html);
+      // small visual feedback
+      TOGGLE_EDIT.textContent = 'Mode édition';
+    }
+
+    function setEditMode(enabled){
+      if(enabled){
+        TOGGLE_EDIT.textContent = 'Enregistrer (esc pour sortir)';
+        CONTENT.setAttribute('contenteditable','true');
+        EDIT_NOTE.style.display = 'block';
+      } else {
+        TOGGLE_EDIT.textContent = 'Mode édition';
+        CONTENT.setAttribute('contenteditable','false');
+        EDIT_NOTE.style.display = 'none';
+      }
+    }
+
+    CLOSE.addEventListener('click', ()=>{ closePanel(); });
+    TOGGLE_EDIT.addEventListener('click', ()=>{
+      // toggle by modifying URL (easiest) — instruct user to use ?edit=1
+      alert('Pour éditer le calendrier, ajoutez ?edit=1 à l\'URL (ex: index.html?edit=1). Cela active le mode édition et permet de sauvegarder le contenu localement.');
+    });
+
+    // keyboard shortcuts
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') closePanel();
+      if(e.key === 'e' || e.key === 'E'){
+        alert('Petit rappel : utilisez ?edit=1 dans l\'URL pour activer l\'édition.');
+      }
+    });
+
+    // load stored contents into invisible cache (not rendered) — optional
+    function preload(){
+      for(let d=1; d<=24; d++){
+        const v = localStorage.getItem(dayKey(d));
+        if(v){ /* noop for now */ }
+      }
+    }
+
+    // allow manual preview toggle: if URL contains ?edit=1 we set EDIT_MODE true
+    if(EDIT_MODE){
+      document.body.style.borderTop = '6px solid var(--gold)';
+    }
+
+    refreshTiles();
+    preload();
+  </script>
+
+
+</body></html>
